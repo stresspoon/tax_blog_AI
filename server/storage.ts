@@ -20,6 +20,7 @@ import {
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, sql } from "drizzle-orm";
+import bcrypt from "bcrypt";
 
 // Storage interface - all CRUD methods for the blog system
 export interface IStorage {
@@ -27,6 +28,7 @@ export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  validateUserPassword(username: string, password: string): Promise<User | null>;
 
   // Post operations
   getAllPosts(): Promise<Post[]>;
@@ -84,10 +86,31 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
+    // Hash the password before storing
+    const saltRounds = 12;
+    const hashedPassword = await bcrypt.hash(insertUser.password, saltRounds);
+    
     const [user] = await db
       .insert(users)
-      .values(insertUser)
+      .values({
+        ...insertUser,
+        password: hashedPassword,
+      })
       .returning();
+    return user;
+  }
+
+  async validateUserPassword(username: string, password: string): Promise<User | null> {
+    const user = await this.getUserByUsername(username);
+    if (!user) {
+      return null;
+    }
+    
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      return null;
+    }
+    
     return user;
   }
 
@@ -189,35 +212,43 @@ export class DatabaseStorage implements IStorage {
   }
 
   async publishScheduledPost(id: string): Promise<Post> {
-    const scheduledPost = await this.getScheduledPostById(id);
-    if (!scheduledPost) {
-      throw new Error("예약된 게시물을 찾을 수 없습니다");
-    }
+    // Use transaction to ensure atomicity and prevent duplicate publishes
+    return await db.transaction(async (tx) => {
+      // Delete the scheduled post and return it in one atomic operation
+      // This ensures only one concurrent transaction can successfully grab the record
+      const deletedScheduledPosts = await tx
+        .delete(scheduledPosts)
+        .where(eq(scheduledPosts.id, id))
+        .returning();
+        
+      if (deletedScheduledPosts.length === 0) {
+        throw new Error("예약된 게시물을 찾을 수 없거나 이미 발행되었습니다");
+      }
+      
+      const scheduledPost = deletedScheduledPosts[0];
 
-    // Create the published post
-    const [post] = await db
-      .insert(posts)
-      .values({
-        title: scheduledPost.title,
-        content: scheduledPost.content,
-        excerpt: scheduledPost.excerpt,
-        slug: scheduledPost.slug,
-        category: scheduledPost.category,
-        tags: scheduledPost.tags,
-        main_keyword: scheduledPost.main_keyword,
-        seo_title: scheduledPost.seo_title,
-        seo_description: scheduledPost.seo_description,
-        author_id: scheduledPost.author_id,
-        published: true,
-        ai_generated: scheduledPost.ai_generated,
-        published_at: new Date(),
-      })
-      .returning();
+      // Create the published post from the deleted scheduled post
+      const [post] = await tx
+        .insert(posts)
+        .values({
+          title: scheduledPost.title,
+          content: scheduledPost.content,
+          excerpt: scheduledPost.excerpt,
+          slug: scheduledPost.slug,
+          category: scheduledPost.category,
+          tags: scheduledPost.tags,
+          main_keyword: scheduledPost.main_keyword,
+          seo_title: scheduledPost.seo_title,
+          seo_description: scheduledPost.seo_description,
+          author_id: scheduledPost.author_id,
+          published: true,
+          ai_generated: scheduledPost.ai_generated,
+          published_at: new Date(),
+        })
+        .returning();
 
-    // Remove from scheduled posts
-    await this.deleteScheduledPost(id);
-
-    return post;
+      return post;
+    });
   }
 
   // SEO Guidelines operations
@@ -257,16 +288,29 @@ export class DatabaseStorage implements IStorage {
   }
 
   async setActiveSeoGuideline(id: string): Promise<void> {
-    // First, deactivate all guidelines
-    await db
-      .update(seoGuidelines)
-      .set({ active: false, updated_at: new Date() });
+    // Use transaction to ensure atomicity
+    await db.transaction(async (tx) => {
+      // First, verify the target guideline exists
+      const [targetGuideline] = await tx
+        .select()
+        .from(seoGuidelines)
+        .where(eq(seoGuidelines.id, id));
+        
+      if (!targetGuideline) {
+        throw new Error("지정된 SEO 가이드라인을 찾을 수 없습니다");
+      }
 
-    // Then activate the specified one
-    await db
-      .update(seoGuidelines)
-      .set({ active: true, updated_at: new Date() })
-      .where(eq(seoGuidelines.id, id));
+      // Deactivate all guidelines
+      await tx
+        .update(seoGuidelines)
+        .set({ active: false, updated_at: new Date() });
+
+      // Then activate the specified one
+      await tx
+        .update(seoGuidelines)
+        .set({ active: true, updated_at: new Date() })
+        .where(eq(seoGuidelines.id, id));
+    });
   }
 
   // AI Content Template operations
