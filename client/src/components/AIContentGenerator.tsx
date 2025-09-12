@@ -40,7 +40,7 @@ export default function AIContentGenerator({ onContentGenerated }: AIContentGene
     if (!prompt.trim() || !contentType || !targetAudience) return;
 
     setIsGenerating(true);
-    console.log("AI content generation started with:", {
+    console.log("AI 콘텐츠 생성 시작:", {
       prompt,
       contentType,
       targetAudience,
@@ -76,7 +76,7 @@ ${targetAudience === 'small-business' ? '중소기업' : audiences.find(a => a.v
   };
 
   const handleUseContent = () => {
-    console.log("Using generated content:", generatedContent);
+    console.log("생성된 콘텐츠 사용:", generatedContent);
     // Reset form
     setPrompt("");
     setContentType("");

@@ -65,7 +65,7 @@ export default function AdminDashboard({ onNavigate }: AdminDashboardProps) {
   ];
 
   const handleQuickAction = (action: string) => {
-    console.log('Quick action:', action);
+    console.log('빠른 작업:', action);
     onNavigate?.(action);
   };
 

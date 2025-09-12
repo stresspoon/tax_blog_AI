@@ -25,7 +25,7 @@ interface BlogCardProps {
 export default function BlogCard({ post, variant = 'default', onClick }: BlogCardProps) {
   const handleClick = () => {
     onClick?.(post);
-    console.log('Blog post clicked:', post.title);
+    console.log('블로그 게시물 클릭:', post.title);
   };
 
   return (

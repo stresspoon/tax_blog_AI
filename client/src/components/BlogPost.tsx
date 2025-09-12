@@ -22,11 +22,11 @@ interface BlogPostProps {
 
 export default function BlogPost({ post, onBack }: BlogPostProps) {
   const handleShare = () => {
-    console.log("Share post:", post.title);
+    console.log("게시물 공유:", post.title);
   };
 
   const handleBookmark = () => {
-    console.log("Bookmark post:", post.title);
+    console.log("게시물 북마크:", post.title);
   };
 
   return (

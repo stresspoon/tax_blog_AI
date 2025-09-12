@@ -6,7 +6,7 @@ export default function HeaderExample() {
 
   const toggleTheme = () => {
     setIsDark(!isDark);
-    console.log('Theme toggled to:', !isDark ? 'dark' : 'light');
+    console.log('테마 변경:', !isDark ? '다크' : '라이트');
   };
 
   return (

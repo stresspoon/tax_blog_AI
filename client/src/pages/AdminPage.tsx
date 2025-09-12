@@ -17,7 +17,7 @@ export default function AdminPage() {
 
   const handleSidebarNavigation = (section: string) => {
     setActiveSection(section);
-    console.log("Navigating to admin section:", section);
+    console.log("관리자 섹션으로 이동:", section);
   };
 
   const renderContent = () => {

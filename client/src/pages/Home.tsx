@@ -112,12 +112,12 @@ export default function Home({ onPostClick }: HomeProps) {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Search triggered:", searchQuery);
+    console.log("검색 실행:", searchQuery);
   };
 
   const handlePostClick = (post: BlogPost) => {
     onPostClick?.(post);
-    console.log("Post clicked:", post.title);
+    console.log("게시물 클릭:", post.title);
   };
 
   const handleClearFilters = () => {

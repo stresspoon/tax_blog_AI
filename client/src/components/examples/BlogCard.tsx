@@ -26,7 +26,7 @@ export default function BlogCardExample() {
   };
 
   const handleCardClick = (post: any) => {
-    console.log('Blog card clicked:', post.title);
+    console.log('블로그 카드 클릭:', post.title);
   };
 
   return (

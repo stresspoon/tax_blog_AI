@@ -50,7 +50,7 @@ export default function CategoryFilter({
       : [...selectedCategories, categoryId];
     
     onCategoryChange?.(newCategories);
-    console.log('Category toggled:', categoryId, newCategories);
+    console.log('카테고리 토글:', categoryId, newCategories);
   };
 
   const handleTagToggle = (tagId: string) => {
@@ -59,12 +59,12 @@ export default function CategoryFilter({
       : [...selectedTags, tagId];
     
     onTagChange?.(newTags);
-    console.log('Tag toggled:', tagId, newTags);
+    console.log('태그 토글:', tagId, newTags);
   };
 
   const handleClear = () => {
     onClear?.();
-    console.log('Filters cleared');
+    console.log('필터 초기화');
   };
 
   const totalFilters = selectedCategories.length + selectedTags.length;

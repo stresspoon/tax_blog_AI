@@ -2,7 +2,7 @@ import AIContentGenerator from '../AIContentGenerator';
 
 export default function AIContentGeneratorExample() {
   const handleContentGenerated = (content: any) => {
-    console.log('AI Content generated:', content);
+    console.log('AI 콘텐츠 생성됨:', content);
   };
 
   return (

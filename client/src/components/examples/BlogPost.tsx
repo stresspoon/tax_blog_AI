@@ -83,7 +83,7 @@ export default function BlogPostExample() {
   };
 
   const handleBack = () => {
-    console.log('Back button clicked');
+    console.log('뒤로가기 버튼 클릭');
   };
 
   return (

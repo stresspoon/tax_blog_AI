@@ -76,7 +76,7 @@ export default function AdminSidebar({ activeItem = 'dashboard', onItemClick }: 
 
   const handleItemClick = (itemId: string) => {
     onItemClick?.(itemId);
-    console.log('Sidebar item clicked:', itemId);
+    console.log('사이드바 메뉴 클릭:', itemId);
   };
 
   return (

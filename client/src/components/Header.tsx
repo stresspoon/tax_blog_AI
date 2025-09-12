@@ -14,7 +14,7 @@ export default function Header({ isAdmin = false, onToggleTheme, isDark = false 
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Search triggered:", searchQuery);
+    console.log("검색 실행:", searchQuery);
   };
 
   return (
@@ -64,7 +64,7 @@ export default function Header({ isAdmin = false, onToggleTheme, isDark = false 
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => console.log("Settings clicked")}
+                onClick={() => console.log("설정 클릭")}
                 data-testid="button-settings"
               >
                 <Settings className="h-4 w-4" />
@@ -74,7 +74,7 @@ export default function Header({ isAdmin = false, onToggleTheme, isDark = false 
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => console.log("Profile clicked")}
+              onClick={() => console.log("프로필 클릭")}
               data-testid="button-profile"
             >
               <User className="h-4 w-4" />

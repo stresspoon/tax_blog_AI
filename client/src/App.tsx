@@ -112,18 +112,18 @@ function Router() {
   const handlePostClick = (post: BlogPost) => {
     setCurrentPost(post);
     setCurrentView('post');
-    console.log('Navigating to post:', post.title);
+    console.log('게시물로 이동:', post.title);
   };
 
   const handleBackToHome = () => {
     setCurrentView('home');
     setCurrentPost(null);
-    console.log('Navigating back to home');
+    console.log('홈으로 돌아가기');
   };
 
   const handleAdminAccess = () => {
     setCurrentView('admin');
-    console.log('Navigating to admin');
+    console.log('관리자 페이지로 이동');
   };
 
   const renderCurrentView = () => {
@@ -179,14 +179,14 @@ export default function App() {
                 className="bg-primary text-primary-foreground px-3 py-2 rounded-md text-sm font-medium hover-elevate"
                 data-testid="button-demo-home"
               >
-                홈
+                공개 블로그
               </button>
               <button
                 onClick={() => (window as any).location.hash = '#admin'}
                 className="bg-secondary text-secondary-foreground px-3 py-2 rounded-md text-sm font-medium hover-elevate"
                 data-testid="button-demo-admin"
               >
-                관리자
+                관리자 패널
               </button>
             </div>
           </div>
