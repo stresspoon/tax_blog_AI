@@ -25,7 +25,6 @@ interface BlogPost {
 
 function Router() {
   const [currentPost, setCurrentPost] = useState<BlogPost | null>(null);
-  const [currentView, setCurrentView] = useState<'home' | 'post' | 'admin'>('home');
 
   // todo: remove mock functionality
   const sampleDetailedPost: BlogPost = {
@@ -111,51 +110,18 @@ function Router() {
 
   const handlePostClick = (post: BlogPost) => {
     setCurrentPost(post);
-    setCurrentView('post');
     console.log('게시물로 이동:', post.title);
-  };
-
-  const handleBackToHome = () => {
-    setCurrentView('home');
-    setCurrentPost(null);
-    console.log('홈으로 돌아가기');
-  };
-
-  const handleAdminAccess = () => {
-    setCurrentView('admin');
-    console.log('관리자 페이지로 이동');
-  };
-
-  const renderCurrentView = () => {
-    switch (currentView) {
-      case 'home':
-        return <Home onPostClick={handlePostClick} />;
-      case 'post':
-        return currentPost ? (
-          <PostView post={currentPost} onBack={handleBackToHome} />
-        ) : (
-          <PostView post={sampleDetailedPost} onBack={handleBackToHome} />
-        );
-      case 'admin':
-        return <AdminPage />;
-      default:
-        return <Home onPostClick={handlePostClick} />;
-    }
   };
 
   return (
     <Switch>
-      <Route path="/">
-        {renderCurrentView()}
-      </Route>
-      <Route path="/admin">
-        <AdminPage />
-      </Route>
+      <Route path="/" component={() => <Home onPostClick={handlePostClick} />} />
+      <Route path="/admin" component={AdminPage} />
       <Route path="/post/:id">
         {currentPost ? (
-          <PostView post={currentPost} onBack={handleBackToHome} />
+          <PostView post={currentPost} onBack={() => window.history.back()} />
         ) : (
-          <PostView post={sampleDetailedPost} onBack={handleBackToHome} />
+          <PostView post={sampleDetailedPost} onBack={() => window.history.back()} />
         )}
       </Route>
       <Route component={NotFound} />
@@ -175,14 +141,14 @@ export default function App() {
             {/* Demo Navigation - todo: remove mock functionality */}
             <div className="fixed bottom-4 right-4 flex gap-2 z-50">
               <button
-                onClick={() => window.location.reload()}
+                onClick={() => window.location.href = '/'}
                 className="bg-primary text-primary-foreground px-3 py-2 rounded-md text-sm font-medium hover-elevate"
                 data-testid="button-demo-home"
               >
                 공개 블로그
               </button>
               <button
-                onClick={() => (window as any).location.hash = '#admin'}
+                onClick={() => window.location.href = '/admin'}
                 className="bg-secondary text-secondary-foreground px-3 py-2 rounded-md text-sm font-medium hover-elevate"
                 data-testid="button-demo-admin"
               >
