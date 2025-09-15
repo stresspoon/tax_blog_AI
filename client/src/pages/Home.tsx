@@ -134,7 +134,7 @@ export default function Home({ onPostClick }: HomeProps) {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              천지세무법인 티앤씨
+              천지세무법인 TNC
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
               최신 세무 법규부터 실무 팁까지, 신뢰할 수 있는 세무회계 전문 블로그
