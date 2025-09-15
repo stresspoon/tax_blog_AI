@@ -23,11 +23,9 @@ export default function Header({ isAdmin = false, onToggleTheme, isDark = false 
         <div className="flex items-center justify-between gap-4">
           {/* Logo and Title */}
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 bg-primary rounded-md flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">TB</span>
-            </div>
+            <img src="/logo.svg" alt="천지세무법인 티앤씨" className="h-8 w-auto" />
             <div>
-              <h1 className="font-semibold text-lg">세무회계 블로그</h1>
+              <h1 className="font-semibold text-lg">천지세무법인 티앤씨</h1>
               {isAdmin && <span className="text-xs text-muted-foreground">관리자 대시보드</span>}
             </div>
           </div>

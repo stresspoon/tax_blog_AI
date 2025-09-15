@@ -32,7 +32,7 @@
 
   --sidebar-border: 210 11% 90%;
 
-  --sidebar-primary: 44 64% 38%;
+  --sidebar-primary: 232 54% 30%;
 
   --sidebar-primary-foreground: 0 0% 98%;
 
@@ -40,7 +40,7 @@
 
   --sidebar-accent-foreground: 210 29% 24%;
 
-  --sidebar-ring: 44 64% 38%;
+  --sidebar-ring: 232 54% 30%;
 
   --popover: 210 11% 95%;
 
@@ -48,7 +48,8 @@
 
   --popover-border: 210 11% 89%;
 
-  --primary: 44 64% 38%;
+  /* Main brand color: #232e76 */
+  --primary: 232 54% 30%;
 
   --primary-foreground: 0 0% 98%;
 
@@ -69,8 +70,8 @@
   --destructive-foreground: 0 0% 98%;
 
   --input: 210 20% 82%;
-  --ring: 44 64% 38%;
-  --chart-1: 44 64% 38%;
+  --ring: 232 54% 30%;
+  --chart-1: 232 54% 30%;
   --chart-2: 204 70% 53%;
   --chart-3: 145 63% 42%;
   --chart-4: 262 52% 47%;
