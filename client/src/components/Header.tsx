@@ -25,7 +25,6 @@ export default function Header({ isAdmin = false, onToggleTheme, isDark = false 
           <div className="flex items-center gap-3">
             <img src="/logo.png" alt="천지세무법인 TNC" className="h-8 w-auto" />
             <div>
-              <h1 className="font-semibold text-lg">천지세무법인 TNC</h1>
               {isAdmin && <span className="text-xs text-muted-foreground">관리자 대시보드</span>}
             </div>
           </div>
